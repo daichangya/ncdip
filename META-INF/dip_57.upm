@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module name="dip">
+  <public>
+   <component priority="0" singleton="false" remote="true" tx="CMT" supportAlias="true">
+      <interface>nc.itf.dip.pub.IQueryField</interface>
+      <implementation>nc.impl.dip.pub.QueryFieldImpl</implementation>
+    </component>
+    <component priority="0" singleton="false" remote="true" tx="CMT" supportAlias="true">
+      <interface>nc.itf.dip.pub.ITaskExecute</interface>
+      <implementation>nc.impl.dip.pub.TaskExecuteImpl</implementation>
+    </component>
+    <component priority="0" singleton="false" remote="true" tx="CMT" supportAlias="true">
+      <interface>nc.itf.dip.optByPluginSrv.IOptByPlg</interface>
+      <implementation>nc.impl.dip.optByPluginSrv.OptByPlgImpl</implementation>
+    </component>
+    <component priority="0" singleton="false" remote="true" tx="CMT" supportAlias="true">
+      <interface>nc.itf.dip.pub.IServiceInputDataRec</interface>
+      <implementation>nc.impl.dip.pub.ServiceInputDataRec</implementation>
+    </component>
+    <component priority="0" singleton="false" remote="true" tx="CMT" supportAlias="true">
+      <interface>nc.itf.dip.pub.IRecDataService</interface>
+      <implementation>nc.impl.dip.pub.RecDataDMO</implementation>
+    </component>
+    <component priority="0" singleton="true" remote="true" tx="CMT" supportAlias="false" >
+			<interface>nc.itf.dip.pub.IServerBufferManage</interface>
+      		<implementation>nc.impl.dip.pub.ServerBufferManage</implementation>
+	</component>
+    <component priority="0" singleton="true" remote="true" tx="CMT" supportAlias="false">
+			<interface>nc.itf.dip.pub.ILogAndTabMonitorSys</interface>
+      		<implementation>nc.impl.dip.pub.LogAndTabMonitorSysImpl</implementation>
+    </component>
+    <component priority="0" singleton="true" remote="true" tx="CMT" supportAlias="false">
+			<interface>nc.itf.dip.pub.IDipLogger</interface>
+      		<implementation>nc.impl.dip.pub.DipLogWrite</implementation>
+    </component>
+    <component priority="0" singleton="true" remote="true" tx="CMT" supportAlias="false">
+			<interface>nc.itf.dip.pub.ITaskManage</interface>
+      		<implementation>nc.impl.dip.pub.TaskMangeImpl</implementation>
+    </component>
+   	<component name="IServiceInputDataRec">
+		<interface>nc.itf.dip.pub.IServiceInputDataRec</interface>
+		<implementation>nc.impl.dip.pub.ServiceInputDataRec</implementation>
+		<extension class="nc.uap.ws.deploy.OxbWSExtensionProcessor">
+			<wsdl>/nc/itf/dip/pub/IServiceInputDataRec.wsdl</wsdl>
+			<address>/IServiceInputDataRec</address>
+		</extension>
+	</component>
+  </public>
+</module>

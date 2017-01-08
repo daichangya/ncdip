@@ -1,0 +1,202 @@
+10
+
+dir
+245
+svn://127.0.0.1/ncdip/src/public/nc/ui/dip
+svn://127.0.0.1
+
+
+
+2016-12-03T02:04:19.545516Z
+245
+zuohw1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+c1e06968-1d1c-ad4d-9808-8a6f5c821550
+
+ftpsourceregister
+dir
+
+control
+dir
+
+processtype
+dir
+
+dataorigin
+dir
+
+warningset
+dir
+
+recformat
+dir
+
+sysregister
+dir
+
+message
+dir
+
+contwhquery
+dir
+
+statemanage
+dir
+
+datastyle
+dir
+
+filepath
+dir
+
+exp
+dir
+
+processstyle
+dir
+
+authorization
+dir
+
+managerserver
+dir
+
+statusregist
+dir
+
+dataproce
+dir
+
+runsys
+dir
+
+messagelogo
+dir
+
+cmdctl
+dir
+
+processflow
+dir
+
+taskregister
+dir
+
+returnmess
+dir
+
+messservtype
+dir
+
+alerttype
+dir
+
+tabstatus
+dir
+
+alertmanag
+dir
+
+effectdef
+dir
+
+datadefinit
+dir
+
+dateprocess
+dir
+
+recstatus
+dir
+
+consttab
+dir
+
+datachange
+dir
+
+dataconsult
+dir
+
+messageplugregister
+dir
+
+datasend
+dir
+
+datadefcheck
+dir
+
+datacheckyytj
+dir
+
+dbcontype
+dir
+
+beifen
+dir
+
+contdatawh
+dir
+
+dataurl
+dir
+
+roleandtable
+dir
+
+contdata
+dir
+
+obtainsign
+dir
+
+dataverify
+dir
+
+datalook
+dir
+
+recserver
+dir
+
+dataformatdef
+dir
+
+datarec
+dir
+
+datacheck
+dir
+
+credence
+dir
+
+messtype
+dir
+
+repeatdata
+dir
+
+authorize
+dir
+
+datasynch
+dir
+
+sourceregist
+dir
+

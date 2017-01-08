@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
+xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+xmlns:jaxws="http://java.sun.com/xml/ns/jaxws"
+jaxb:version="2.0"
+xmlns:ns0="http://pub.dip.itf.nc/IServiceInputDataRec"
+targetNamespace="http://pub.dip.itf.nc/IServiceInputDataRec">
+
+<jaxws:bindings>
+	<jaxws:package name="nc.itf.dip.pub"/>
+</jaxws:bindings>
+
+<wsdl:types>
+   <xsd:schema xmlns:ns="http://pub.dip.itf.nc/IServiceInputDataRec"
+			attributeFormDefault="unqualified"
+			elementFormDefault="unqualified"
+			targetNamespace="http://pub.dip.itf.nc/IServiceInputDataRec" jaxb:version="2.0">
+	<xsd:annotation>
+    	<xsd:appinfo>
+   			<jaxb:schemaBindings>
+    			<jaxb:package name="nc.itf.dip.pub"/>
+    		</jaxb:schemaBindings>
+   		</xsd:appinfo>
+   	</xsd:annotation>
+	<xsd:element name="callData">
+         <xsd:complexType>
+            <xsd:sequence>
+				<xsd:element name="string"  minOccurs="0" nillable="true" type="xsd:string"/>
+             </xsd:sequence>  
+         </xsd:complexType>
+     </xsd:element>
+	<xsd:element name="callDataResponse">
+         <xsd:complexType>
+            <xsd:sequence>
+				<xsd:element name="return"  minOccurs="0" nillable="true" type="xsd:string"/>
+             </xsd:sequence>  
+         </xsd:complexType>
+     </xsd:element>
+   </xsd:schema>
+</wsdl:types>
+    <wsdl:message name="callDataRequest">
+        <wsdl:part name="parameters"  element="ns0:callData"/>
+    </wsdl:message>
+    <wsdl:message name="callDataResponse">
+        <wsdl:part name="parameters"  element="ns0:callDataResponse"/>
+    </wsdl:message>
+
+    <wsdl:portType name="IServiceInputDataRecPortType">
+        <wsdl:operation name="callData">
+            <wsdl:input message="ns0:callDataRequest" wsaw:Action="urn:callData"/>
+            <wsdl:output message="ns0:callDataResponse" wsaw:Action="urn:callDataResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    
+    
+    <wsdl:binding name="IServiceInputDataRecSOAP11Binding" type="ns0:IServiceInputDataRecPortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="callData">
+            <soap:operation soapAction="urn:callData" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="IServiceInputDataRec">
+        <wsdl:port name="IServiceInputDataRecSOAP11port_http" binding="ns0:IServiceInputDataRecSOAP11Binding">
+            <soap:address location="http://localhost/uapws/service/IServiceInputDataRec"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,12 @@
+#Mon Dec 26 21:40:27 CST 2016
+NCPatchPropertyStore.SOURCE_DEST_LOCATION_KEY///dip02/resources=resources/
+NCPatchPropertyStore.SOURCE_DEST_LOCATION_KEY///dip02/src/client=modules/dip/client/classes/
+NCPatchPropertyStore.SOURCE_DEST_LOCATION_KEY///dip02/src/gen=
+NCPatchPropertyStore.SOURCE_DEST_LOCATION_KEY///dip02/src/private=modules/dip/META-INF/classes/
+NCPatchPropertyStore.SOURCE_DEST_LOCATION_KEY///dip02/src/public=modules/dip/classes/
+NCPatchPropertyStore.SOURCE_DEST_LOCATION_KEY///dip02/src/test=
+NCPatchPropertyStore.SOURCE_DEST_LOCATION_KEY///dip02/uap/client=modules/uap/client/classes/
+NCPatchPropertyStore.SOURCE_DEST_LOCATION_KEY///dip02/uap/private=modules/uap/META-INF/classes/
+NCPatchPropertyStore.SOURCE_DEST_LOCATION_KEY///dip02/uap/public=modules/uap/classes/
+NCPatchPropertyStore.SOURCE_DEST_LOCATION_KEY///dip02/ws=
+eclipse.preferences.version=1

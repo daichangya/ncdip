@@ -1,0 +1,238 @@
+10
+
+dir
+246
+svn://127.0.0.1/ncdip/src/public/nc/vo/dip
+svn://127.0.0.1
+
+
+
+2016-12-03T02:05:05.655154Z
+246
+zuohw1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+c1e06968-1d1c-ad4d-9808-8a6f5c821550
+
+ftpsourceregister
+dir
+
+control
+dir
+
+dataorigin
+dir
+
+warningset
+dir
+
+message
+dir
+
+contwhquery
+dir
+
+statemanage
+dir
+
+datastyle
+dir
+
+exp
+dir
+
+filepath
+dir
+
+managerserver
+dir
+
+statusregist
+dir
+
+dataproce
+dir
+
+runsys
+dir
+
+returnmess
+dir
+
+alerttype
+dir
+
+messservtype
+dir
+
+tabstatus
+dir
+
+alertmanag
+dir
+
+effectdef
+dir
+
+voucher
+dir
+
+datadefinit
+dir
+
+dateprocess
+dir
+
+consttab
+dir
+
+tyzhq
+dir
+
+datasend
+dir
+
+datadefcheck
+dir
+
+datacheckyytj
+dir
+
+beifen
+dir
+
+actionset
+dir
+
+roleandtable
+dir
+
+contdata
+dir
+
+obtainsign
+dir
+
+datalook
+dir
+
+recserver
+dir
+
+dataformatdef
+dir
+
+esbmhccb
+dir
+
+datacheck
+dir
+
+datarecD
+dir
+
+procondition
+dir
+
+credence
+dir
+
+commandview
+dir
+
+messtype
+dir
+
+util
+dir
+
+tyxml
+dir
+
+recformat
+dir
+
+esbfilesend
+dir
+
+resdata
+dir
+
+sysregister
+dir
+
+processstyle
+dir
+
+authorization
+dir
+
+messagelogo
+dir
+
+processflow
+dir
+
+taskregister
+dir
+
+view
+dir
+
+recstatus
+dir
+
+datachange
+dir
+
+messageplugregister
+dir
+
+dbcontype
+dir
+
+dataurl
+dir
+
+contdatawh
+dir
+
+dataverify
+dir
+
+excel
+dir
+
+xml
+dir
+
+datarec
+dir
+
+in
+dir
+
+authorize
+dir
+
+repeatdata
+dir
+
+datasynch
+dir
+
+sourceregist
+dir
+
