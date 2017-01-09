@@ -688,43 +688,61 @@ extends AbstractMyEventHandler {
 				whereCondition="  and coalesce(dr,0)=0 and "+defwhere+dlg.getReturnSql();
 				delWhereCondition=" and "+defDeleteAuthWhere+dlg.getReturnSql();
 			}
-			String sql = "";
 
-			DipDatadefinitHVO datadefinitVO = (DipDatadefinitHVO)HYPubBO_Client.queryByPrimaryKey(DipDatadefinitHVO.class, vo1.getContabcode());
+			final DipDatadefinitHVO datadefinitVO = (DipDatadefinitHVO)HYPubBO_Client.queryByPrimaryKey(DipDatadefinitHVO.class, vo1.getContabcode());
 
-			
-			String csql="select count(*) c from "+datadefinitVO.getMemorytable()+" where 1=1 "+whereCondition;
-			String ssql="";
-			try{
-				ssql=queryfield.queryfield(csql);
-			}catch(SQLException ex){
+			new Thread() {
+				@Override
+				public void run() {
+					BannerDialog dialog = new BannerDialog(getSelfUI());
+					dialog.setTitle("提示");
+					dialog.setStartText("正在查询，请稍候...");
+					dialog.start();
+					try {
+						Thread.sleep(500); // 等待1秒
+						queryData(datadefinitVO);
+					} catch (Exception e) {
+						MessageDialog.showErrorDlg(getBillUI(), "错误", e.getMessage());
+					}finally {
+						dialog.end();
+					}
+				}
+			}.start();
+		}
+	}
+	private void queryData(DipDatadefinitHVO datadefinitVO)
+			throws BusinessException, DbException, Exception, SQLException {
+		String csql="select count(*) c from "+datadefinitVO.getMemorytable()+" where 1=1 "+whereCondition;
+		String ssql="";
+		try{
+			ssql=queryfield.queryfield(csql);
+		}catch(SQLException ex){
 //				System.out.println("["+ex.getSQLState()+"]");
 //				System.out.println("["+ex.getErrorCode()+"]");
 //				System.out.println("["+ex.getMessage()+"]");
-				if(ex.getSQLState().equals("42000")){
-					if(ex.getErrorCode()==207){
-						String msg=ex.getMessage().substring(12);
-						throw new Exception(msg.substring(0,msg.indexOf("\""))+" 字段在表中不存在");
-					}else if(ex.getErrorCode()==936){
-						throw new Exception("查询条件有误，请检查！");
-					}else if(ex.getErrorCode()==208){
-						throw new Exception("表或视图不存在");
-					}else{
-						throw ex;
-					}
-				}else {
+			if(ex.getSQLState().equals("42000")){
+				if(ex.getErrorCode()==207){
+					String msg=ex.getMessage().substring(12);
+					throw new Exception(msg.substring(0,msg.indexOf("\""))+" 字段在表中不存在");
+				}else if(ex.getErrorCode()==936){
+					throw new Exception("查询条件有误，请检查！");
+				}else if(ex.getErrorCode()==208){
+					throw new Exception("表或视图不存在");
+				}else{
 					throw ex;
 				}
+			}else {
+				throw ex;
 			}
-			int count=Integer.parseInt(ssql);
-			//如果数据量过大，则给予提示，让其选择查询条件 2011-7-5 cl
-			if(count >ui.getCount()){
-				MessageDialog.showHintDlg(getSelfUI(), "提示", "当前查询的数据量过多，会导致系统效率变慢，请设置查询条件后进行查询！");
-				return;
-			}
-			//查询对照表中的值
-			queryDisplayValueMethod(datadefinitVO.getMemorytable(),whereCondition,datadefinitVO.getPk_datadefinit_h());
 		}
+		int count=Integer.parseInt(ssql);
+		//如果数据量过大，则给予提示，让其选择查询条件 2011-7-5 cl
+		if(count >ui.getCount()){
+			MessageDialog.showHintDlg(getSelfUI(), "提示", "当前查询的数据量过多，会导致系统效率变慢，请设置查询条件后进行查询！");
+			return;
+		}
+		//查询对照表中的值
+		queryDisplayValueMethod(datadefinitVO.getMemorytable(),whereCondition,datadefinitVO.getPk_datadefinit_h());
 	}
 	/**
 	 * 根据表名和where条件查询数据，抽象出此方法是为了让增加保存数据后，根据增加主键记录来查询展示新增加记录
@@ -824,11 +842,11 @@ extends AbstractMyEventHandler {
 					if(j==contField.length-1&&pkTableField.length()>0){
 //								ui.getBillCardPanel().getBillTable().getCellRenderer(i, j).getTableCellRendererComponent(ui.getBillCardPanel().getBillTable(), value, false, false, i, j);
 					}else{
-						BillItem bodyItem = ui.getBillCardPanel().getBodyItem(vdefs[j]);
-						if(bodyItem!=null&&bodyItem.isShow()){
-							ui.getBillCardPanel().getBillTable().getCellRenderer(i, c).getTableCellRendererComponent(ui.getBillCardPanel().getBillTable(), value, false, false, i, c);
-							c++;
-						}
+//						BillItem bodyItem = ui.getBillCardPanel().getBodyItem(vdefs[j]);
+//						if(bodyItem!=null&&bodyItem.isShow()){
+//							ui.getBillCardPanel().getBillTable().getCellRenderer(i, c).getTableCellRendererComponent(ui.getBillCardPanel().getBillTable(), value, false, false, i, c);
+//							c++;
+//						}
 					}
 				}
 			}
@@ -1644,11 +1662,11 @@ extends AbstractMyEventHandler {
 			}
 			DipADContdataVO vo1=(DipADContdataVO) treeNode.getData();
 			//得到树上需要导出的表的主键
-			String pk = vo1.getContabcode();
+			final String pk = vo1.getContabcode();
 
 			DipDatadefinitHVO datafinitVO = (DipDatadefinitHVO)HYPubBO_Client.queryByPrimaryKey(DipDatadefinitHVO.class, pk);
 			//对照结果存储表
-			String tablename = datafinitVO.getMemorytable();
+			final String tablename = datafinitVO.getMemorytable();
 			//找出所有要查的字段从dip_auth_design里面查询要导出的字段；
 			String sql_ziduan = "select cname,ename from dip_auth_design where nvl(dr,0)=0 and pk_datadefinit_h = '"+vo1.getPrimaryKey()+"' and designtype = '3' order by disno ";
 		
@@ -1663,6 +1681,7 @@ extends AbstractMyEventHandler {
 			JFileChooser jfileChooser = new JFileChooser();
 			jfileChooser.setDialogType(jfileChooser.SAVE_DIALOG);
 			jfileChooser.setFileFilter(new FileFilter());
+			jfileChooser.setDialogTitle("导出");
 			if (jfileChooser.showSaveDialog(this.getBillUI()) == javax.swing.JFileChooser.CANCEL_OPTION)
 				return;
 			path = jfileChooser.getSelectedFile().toString();
@@ -1677,60 +1696,88 @@ extends AbstractMyEventHandler {
 				cname =cname + name + ",";
 
 			}
-			if(expModel){
-				String filePath = path.endsWith(".xls")?path:(path+".xls");
-				ExpToExcel toexcle = new ExpToExcel(filePath,"数据对照结果",cname.substring(0,cname.length()-1),null,null);
-				MessageDialog.showHintDlg(getSelfUI(), "成功", "导出成功");
-				return;
-			}
-			//去选择的相对于的表里去查询数据；
-			//2011-7-1 增加了验证表是否在数据库中存在
-			boolean isExist=isTableExist(tablename);
-			if(isExist){
-				
-				String sql="select count(*) from "+tablename.toUpperCase()+" where "+(isdqfw?"1=1 "+whereCondition:defwhere+" and coalesce(dr,0)=0 ");
-				String count=queryfield.queryfield(sql);
-				int s=Integer.parseInt(count);
-				if(s==0){
-					getSelfUI().showErrorMessage("没有符合条件的数据！");
-					return;
-				}
-				
-				if(s>50000){
-					fenye=true;
-					int k=s%50000==0?s/50000:s/50000+1;
-					StringBuffer sb=new StringBuffer();
-					for(int kkk=0;kkk<k;kkk++){
-						String pp=path+"-"+kkk;
-						wenjian++;
-						if(method(ziduan, tablename, pp, ss, cname,isdqfw,pk)){
-							sb.append(pp+"、");
-							if(kkk==k-1){
-								MessageDialog.showWarningDlg(this.getBillUI(), "提示", "导出完成!导出的文件是"+sb.substring(0, sb.length()-1)+"!");
-								return ;
-							}
-						}else{
-							getSelfUI().showErrorMessage("导出错误！");
-        					return;
-						}
+			final Boolean final_expModel = expModel;
+			final Boolean final_isdqfw = isdqfw;
+			final String final_path = path;
+			final String final_ziduan = ziduan;
+			final String final_cname = cname;
+			final String[] final_ss = ss;
+			new Thread() {
+				@Override
+				public void run() {
+					BannerDialog dialog = new BannerDialog(getSelfUI());
+					dialog.setTitle("提示");
+					dialog.setStartText("正在导出，请稍候...");
+					dialog.start();
+					try {
+						Thread.sleep(500); // 等待1秒
+						exportData(final_expModel, final_isdqfw, final_path, pk, tablename, final_ziduan, final_cname, final_ss);
+					} catch (Exception e) {
+						MessageDialog.showErrorDlg(getBillUI(), "错误", e.getMessage());
+					}finally {
+						dialog.end();
 					}
-					
-        			}else{
-        				if(method(ziduan, tablename, path, ss, cname,isdqfw,pk)){
-        					MessageDialog.showWarningDlg(this.getBillUI(), "提示", "导出完成!");
-        					return;
-        				}else{
-        					getSelfUI().showErrorMessage("导出错误！");
-        					return;
-        				}
-        			}
-			}else{
-				getSelfUI().showWarningMessage("表或视图不存在！");
-				return;
-			}
+				}
+			}.start();
 		} catch (Exception e) {
 			e.printStackTrace();
 			getSelfUI().showErrorMessage(e.getMessage());
+		}
+	}
+	private void exportData(boolean expModel, boolean isdqfw, String path,
+			String pk, String tablename, String ziduan, String cname,
+			String[] ss) throws IOException, BusinessException, SQLException,
+			DbException {
+		if(expModel){
+			String filePath = path.endsWith(".xls")?path:(path+".xls");
+			ExpToExcel toexcle = new ExpToExcel(filePath,"数据对照结果",cname.substring(0,cname.length()-1),null,null);
+			MessageDialog.showHintDlg(getSelfUI(), "成功", "导出成功");
+			return;
+		}
+		//去选择的相对于的表里去查询数据；
+		//2011-7-1 增加了验证表是否在数据库中存在
+		boolean isExist=isTableExist(tablename);
+		if(isExist){
+			
+			String sql="select count(*) from "+tablename.toUpperCase()+" where "+(isdqfw?"1=1 "+whereCondition:defwhere+" and coalesce(dr,0)=0 ");
+			String count=queryfield.queryfield(sql);
+			int s=Integer.parseInt(count);
+			if(s==0){
+				getSelfUI().showErrorMessage("没有符合条件的数据！");
+				return;
+			}
+			
+			if(s>50000){
+				fenye=true;
+				int k=s%50000==0?s/50000:s/50000+1;
+				StringBuffer sb=new StringBuffer();
+				for(int kkk=0;kkk<k;kkk++){
+					String pp=path+"-"+kkk;
+					wenjian++;
+					if(method(ziduan, tablename, pp, ss, cname,isdqfw,pk)){
+						sb.append(pp+"、");
+						if(kkk==k-1){
+							MessageDialog.showWarningDlg(this.getBillUI(), "提示", "导出完成!导出的文件是"+sb.substring(0, sb.length()-1)+"!");
+							return ;
+						}
+					}else{
+						getSelfUI().showErrorMessage("导出错误！");
+						return;
+					}
+				}
+				
+				}else{
+					if(method(ziduan, tablename, path, ss, cname,isdqfw,pk)){
+						MessageDialog.showWarningDlg(this.getBillUI(), "提示", "导出完成!");
+						return;
+					}else{
+						getSelfUI().showErrorMessage("导出错误！");
+						return;
+					}
+				}
+		}else{
+			getSelfUI().showWarningMessage("表或视图不存在！");
+			return;
 		}
 	}
 	
@@ -1882,6 +1929,7 @@ extends AbstractMyEventHandler {
 		JFileChooser jfileChooser = new JFileChooser();
 		jfileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
 		jfileChooser.setFileFilter(new FileFilter());
+		jfileChooser.setDialogTitle("导入");
 		if (jfileChooser.showSaveDialog(this.getBillUI()) == javax.swing.JFileChooser.CANCEL_OPTION)
 			return;
 		String path = jfileChooser.getSelectedFile().toString();
@@ -1989,7 +2037,10 @@ extends AbstractMyEventHandler {
 			getSelfUI().showErrorMessage("excel文件不能为空");
 			return;
 		}
-		
+		if(tvo.getData().length>ui.getCount()){
+			getSelfUI().showErrorMessage("excel文件数据超过最大导入行："+ui.getCount());
+			return;
+		}
 		final HashMap<String, DipDatadefinitBVO> final_databMap = databMap;
 		final HashMap final_autoInMap = autoInMap;
 		final HashMap final_functionMap = functionMap;
@@ -2001,7 +2052,7 @@ extends AbstractMyEventHandler {
 			@Override
 			public void run() {
 				BannerDialog dialog = new BannerDialog(getSelfUI());
-				dialog.setTitle("正在导入，请稍候...");
+				dialog.setTitle("提示");
 				dialog.setStartText("正在导入，请稍候...");
 				dialog.start();
 				try {

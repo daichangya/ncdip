@@ -108,7 +108,28 @@ public class DataCheckUtil {
 					String pk_corp = ClientEnvironment.getInstance().getCorporation().getPk_corp();
 					if(!"0001".equals(pk_corp)){
 						IQueryField queryfield = (IQueryField)NCLocator.getInstance().lookup(IQueryField.class.getName());
-						String sql = "select 1 from "+middletab+" where contpk='"
+						DipDatadefinitBVO bvo = (DipDatadefinitBVO)HYPubBO_Client.queryByPrimaryKey(DipDatadefinitBVO.class,
+								vo.getPk_datadefinit_b());
+//						String sql = "select 1 from "+middletab+" where contpk='"
+//								+value
+//								+"' and extepk in "
+//								+"  (select pk_role_corp_alloc "
+//								+"   from v_dip_corproleauth "
+//								+" where pk_role in "
+//								+"   (select pk_role "
+//								+"    from sm_user_role cc "
+//								+"   where cc.cuserid = '"
+//								+ClientEnvironment.getInstance().getUser().getPrimaryKey()+"')) ";
+//						List list = queryfield.queryfieldList(sql);
+//						if(null != list && list.size()>0){
+//							return true;
+//						}else{
+							middletab = queryfield.queryfield("SELECT middletab FROM dip_adcontdata WHERE contcolcode='"
+									+vo.getPk_datadefinit_b()
+									+"' and contabcode='"
+									+bvo.getPk_datadefinit_h()
+									+"'");
+							String sql = "select 1 from "+middletab+" where contpk='"
 								+value
 								+"' and extepk in "
 								+"  (select pk_role_corp_alloc "
@@ -118,10 +139,11 @@ public class DataCheckUtil {
 								+"    from sm_user_role cc "
 								+"   where cc.cuserid = '"
 								+ClientEnvironment.getInstance().getUser().getPrimaryKey()+"')) ";
-						List list = queryfield.queryfieldList(sql);
-						if(null != list && list.size()>0){
-							return true;
-						}
+							List list = queryfield.queryfieldList(sql);
+							if(null != list && list.size()>0){
+								return true;
+							}
+//						}
 					}else{
 						return true;
 					}

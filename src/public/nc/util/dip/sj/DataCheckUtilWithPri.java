@@ -130,6 +130,12 @@ public class DataCheckUtilWithPri {
 					}
 					if(!"0001".equals(pk_corp)){
 						IQueryField queryfield = (IQueryField)NCLocator.getInstance().lookup(IQueryField.class.getName());
+						DipDatadefinitBVO bvo = (DipDatadefinitBVO)new BaseDAO().retrieveByPK(DipDatadefinitBVO.class,vo.getPk_datadefinit_b());
+						middletab = queryfield.queryfield("SELECT middletab FROM dip_adcontdata WHERE contcolcode='"
+								+vo.getPk_datadefinit_b()
+								+"' and contabcode='"
+								+bvo.getPk_datadefinit_h()
+								+"'");
 						String sql = "select 1 from "+middletab+" where contpk='"
 								+value
 								+"' and extepk in "
