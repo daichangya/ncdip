@@ -85,11 +85,7 @@ public class DataCheckUtilWithPri {
 
 	private Boolean check(DipDatadefinitCVO vo, String value, Integer dtype,String middletab) throws Exception {
 		if("".equals(value)){
-			if(dtype==8){
-				return false;
-			}else{
-				return false;
-			}
+			return false;
 		}else{
 			value=value.trim();
 			if(dtype==1){//长度校验
@@ -224,6 +220,8 @@ public class DataCheckUtilWithPri {
 						return false;
 					}
 				}
+			}else if(dtype==8){
+				return true;
 			}else if(dtype==9){
 				String def1 = vo.getDef1();
 				UFDouble input_value = new UFDouble(vo.getInput_value());

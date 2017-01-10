@@ -33,13 +33,18 @@ import nc.vo.pub.lang.UFDateTime;
              public String getvalue;
              public String vdef8;
              public String vdef2;
-             public String pk_contwhquery;
+             public String pk_contdatawh_h;
              public String ts;
              public String vdef6;
              public String vdef1;
              public String vdef5;
              public String cname;
              public UFBoolean islock;
+             public UFBoolean isref;
+             public String userid;
+             public String pk_datadefinit_h;
+             public String kh;
+             public String ope;
             
              public static final String  VDEF4="vdef4";   
              public static final String  VDEF7="vdef7";   
@@ -58,7 +63,55 @@ import nc.vo.pub.lang.UFDateTime;
              public static final String  CNAME="cname";   
       
     
-        public UFBoolean getIslock() {
+        public String getPk_contdatawh_h() {
+				return pk_contdatawh_h;
+			}
+
+			public void setPk_contdatawh_h(String pk_contdatawh_h) {
+				this.pk_contdatawh_h = pk_contdatawh_h;
+			}
+
+			public String getKh() {
+				return kh;
+			}
+
+			public void setKh(String kh) {
+				this.kh = kh;
+			}
+
+			public String getOpe() {
+				return ope;
+			}
+
+			public void setOpe(String ope) {
+				this.ope = ope;
+			}
+
+		public String getUserid() {
+				return userid;
+			}
+
+			public void setUserid(String userid) {
+				this.userid = userid;
+			}
+
+			public String getPk_datadefinit_h() {
+				return pk_datadefinit_h;
+			}
+
+			public void setPk_datadefinit_h(String pk_datadefinit_h) {
+				this.pk_datadefinit_h = pk_datadefinit_h;
+			}
+
+		public UFBoolean getIsref() {
+				return isref;
+			}
+
+			public void setIsref(UFBoolean isref) {
+				this.isref = isref;
+			}
+
+		public UFBoolean getIslock() {
 				return islock;
 			}
 
@@ -256,27 +309,6 @@ import nc.vo.pub.lang.UFDateTime;
 	 } 	  
        
         /**
-	   * 属性pk_contwhquery的Getter方法.
-	   *
-	   * 创建日期:2011-5-12
-	   * @return String
-	   */
-	 public String getPk_contwhquery() {
-		 return pk_contwhquery;
-	  }   
-	  
-     /**
-	   * 属性pk_contwhquery的Setter方法.
-	   *
-	   * 创建日期:2011-5-12
-	   * @param newPk_contwhquery String
-	   */
-	public void setPk_contwhquery(String newPk_contwhquery) {
-		
-		pk_contwhquery = newPk_contwhquery;
-	 } 	  
-       
-        /**
 	   * 属性ts的Getter方法.
 	   *
 	   * 创建日期:2011-5-12
@@ -390,37 +422,6 @@ import nc.vo.pub.lang.UFDateTime;
 		cname = newCname;
 	 } 	  
        
-       
-    /**
-	  * 验证对象各属性之间的数据逻辑正确性.
-	  *
-	  * 创建日期:2011-5-12
-	  * @exception nc.vo.pub.ValidationException 如果验证失败,抛出
-	  * ValidationException,对错误进行解释.
-	 */
-	 public void validate() throws ValidationException {
-	
-	 	ArrayList errFields = new ArrayList(); // errFields record those null
-
-                                                      // fields that cannot be null.
-       		  // 检查是否为不允许空的字段赋了空值,你可能需要修改下面的提示信息:
-	
-	   		if (pk_contwhquery == null) {
-			errFields.add(new String("pk_contwhquery"));
-			  }	
-	   	
-	    StringBuffer message = new StringBuffer();
-		message.append("下列字段不能为空:");
-		if (errFields.size() > 0) {
-		String[] temp = (String[]) errFields.toArray(new String[0]);
-		message.append(temp[0]);
-		for ( int i= 1; i < temp.length; i++ ) {
-			message.append(",");
-			message.append(temp[i]);
-		}
-		throw new NullFieldException(message.toString());
-		}
-	 }
 			   
        
    	/**
@@ -442,7 +443,7 @@ import nc.vo.pub.lang.UFDateTime;
 	  * @return java.lang.String
 	  */
 	public java.lang.String getPKFieldName() {
-	 	  return "pk_contwhquery";
+	 	  return "pk_contdatawh_h";
 	 	}
     
 	/**
@@ -472,10 +473,10 @@ import nc.vo.pub.lang.UFDateTime;
 	 * 创建日期:2011-5-12
 	 * @param newPk_contwhquery 主键值
 	 */
-	 public ContwhqueryVO(String newPk_contwhquery) {
+	 public ContwhqueryVO(String newPk_contdatawh_h) {
 		
 		// 为主键字段赋值:
-		 pk_contwhquery = newPk_contwhquery;
+		 pk_contdatawh_h = newPk_contdatawh_h;
 	
     	}
     
@@ -488,7 +489,7 @@ import nc.vo.pub.lang.UFDateTime;
 	  */
 	   public String getPrimaryKey() {
 				
-		 return pk_contwhquery;
+		 return pk_contdatawh_h;
 	   
 	   }
 
@@ -498,9 +499,9 @@ import nc.vo.pub.lang.UFDateTime;
 	  * 创建日期:2011-5-12
 	  * @param newPk_contwhquery  String    
 	  */
-	 public void setPrimaryKey(String newPk_contwhquery) {
+	 public void setPrimaryKey(String newPk_contdatawh_h) {
 				
-				pk_contwhquery = newPk_contwhquery; 
+		 pk_contdatawh_h = newPk_contdatawh_h; 
 				
 	 } 
            

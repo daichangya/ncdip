@@ -2466,5 +2466,9 @@ public int exePluginalert(String pluginclassname) {
 		ret.setErrlist(list);
 		return ret;
 	}
+	public void insertVOs(SuperVO[] vos) throws Exception {
+		new BaseDAO().insertVOArray(vos);
+		
+	}
 	
 }

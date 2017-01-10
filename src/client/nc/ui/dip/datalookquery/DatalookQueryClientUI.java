@@ -218,22 +218,22 @@ public class DatalookQueryClientUI extends AbstractBdBillCardUI{
 		this.setBillOperate(2);
 	*/
 //		liyunzhe 给查询模板增加缓存
-		if(this.map!=null){
-			int count=getBillCardPanel().getRowCount();
-			for(int kk=0;kk<count;kk++){
-				String ename=getBillCardPanel().getBillModel().getValueAt(kk, "ename")==null?"":getBillCardPanel().getBillModel().getValueAt(kk, "ename").toString();
-				if(!ename.equals("")){
-				 Map map=this.map.get(ename);
-				 if(map!=null){
-//					0 kh,1 cztype,2 getvalue,3 ope
-					 getBillCardPanel().getBillModel().setValueAt(map.get("kh"), kk, "kh") ;
-					 getBillCardPanel().getBillModel().setValueAt(map.get("cztype"), kk, "cztype") ;
-					 getBillCardPanel().getBillModel().setValueAt(map.get("getvalue"), kk, "getvalue") ;
-					 getBillCardPanel().getBillModel().setValueAt(map.get("ope"), kk, "ope") ;
-				 }
-				}
-			}
-		}
+//		if(this.map!=null){
+//			int count=getBillCardPanel().getRowCount();
+//			for(int kk=0;kk<count;kk++){
+//				String ename=getBillCardPanel().getBillModel().getValueAt(kk, "ename")==null?"":getBillCardPanel().getBillModel().getValueAt(kk, "ename").toString();
+//				if(!ename.equals("")){
+//				 Map map=this.map.get(ename);
+//				 if(map!=null){
+////					0 kh,1 cztype,2 getvalue,3 ope
+//					 getBillCardPanel().getBillModel().setValueAt(map.get("kh"), kk, "kh") ;
+//					 getBillCardPanel().getBillModel().setValueAt(map.get("cztype"), kk, "cztype") ;
+//					 getBillCardPanel().getBillModel().setValueAt(map.get("getvalue"), kk, "getvalue") ;
+//					 getBillCardPanel().getBillModel().setValueAt(map.get("ope"), kk, "ope") ;
+//				 }
+//				}
+//			}
+//		}
 	
 	}
 	public void bodyRowChange(BillEditEvent arg0) {

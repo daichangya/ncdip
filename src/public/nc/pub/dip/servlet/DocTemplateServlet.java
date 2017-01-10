@@ -175,7 +175,7 @@ public class DocTemplateServlet extends HttpServlet {
 						"               FROM dip_auth_design\n" + 
 						"              WHERE pk_datadefinit_h = ?\n" + 
 						"                and designtype = 5\n" + 
-						"                and coalesce(dr, 0) = 0 and consvalue is null ) c inner join (SELECT *\n" + 
+						"                and coalesce(dr, 0) = 0 and (consvalue is null or consvalue='SYS.REF') ) c inner join (SELECT *\n" + 
 						"               FROM dip_auth_design\n" + 
 						"              WHERE pk_datadefinit_h = ?\n" + 
 						"                and designtype = 4\n" + 

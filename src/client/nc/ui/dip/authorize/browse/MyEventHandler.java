@@ -22,6 +22,7 @@ import nc.bs.excel.pub.ExpExcelVO;
 import nc.bs.excel.pub.ExpToExcel;
 import nc.bs.excel.pub.ExpToExcel1;
 import nc.bs.framework.common.NCLocator;
+import nc.bs.uap.lock.PKLock;
 import nc.itf.dip.pub.IQueryField;
 import nc.itf.uap.IUAPQueryBS;
 import nc.jdbc.framework.exception.DbException;
@@ -116,6 +117,7 @@ extends AbstractMyEventHandler {
 	HashMap<String, DipDatadefinitCVO[]> checkMap = new HashMap<String, DipDatadefinitCVO[]>();
 	DatalookQueryDlg dlg = null;
 	HashMap<String, DipDatadefinitBVO> dataBMap =  new HashMap<String, DipDatadefinitBVO>();
+	public static final String LOCKNAME = "importdatalock";
 	public HashMap<String, DatalookQueryDlg> getDlgMap() {
 		return dlgMap;
 	}
@@ -793,15 +795,16 @@ extends AbstractMyEventHandler {
 //					ui.getBillCardPanel().setBillData(arg0)
 			}
 		}
-		ui.getBillCardPanel().setTatolRowShow(true);
+		ui.getBillCardPanel().setTatolRowShow(false);
 		ui.getBillCardPanel().getBillTable().setColumnSelectionAllowed(false);
 		if(listValue!=null && listValue.size()>0){
+			int size = listValue.size();
 			HashMap<String, HashMap<String, String>> showReplaceMap = new HashMap<String, HashMap<String, String>>();
-			for(int i = 0;i<listValue.size();i++){
+			for(int i = 0;i<size;i++){
 				HashMap mapValue = (HashMap)listValue.get(i);
 				ui.getBillCardPanel().getBillModel().addLine();
 				DipADDatalookVO vo=new DipADDatalookVO();
-				int c = 0;
+//				int c = 0;
 				for(int j = 0;j<contField.length;j++){
 					String upperCase = contField[j].toUpperCase();
 					Object value=mapValue.get(upperCase);
@@ -850,6 +853,7 @@ extends AbstractMyEventHandler {
 					}
 				}
 			}
+			ui.getBillCardPanel().setTatolRowShow(true);
 		}
 	}
 	boolean isAdd=false;
@@ -2048,6 +2052,18 @@ extends AbstractMyEventHandler {
 		final TxtDataVO final_tvo = tvo;
 		final String final_titlenames = titlenames;
 		final HashMap final_enametoExcelCol = enametoExcelCol;
+		Boolean userLock = false;
+		if(tvo.getData().length>ui.getImportCount()){
+			userLock = true;
+		}
+		final Boolean final_userLock = userLock;
+		if(final_userLock){
+			boolean data = lockData();
+			if(!data){
+				getSelfUI().showErrorMessage("其他人正在大数据导入，请稍后在试。");
+				return;
+			}
+		}
 		new Thread() {
 			@Override
 			public void run() {
@@ -2064,10 +2080,24 @@ extends AbstractMyEventHandler {
 					MessageDialog.showErrorDlg(getBillUI(), "错误", e.getMessage());
 				}finally {
 					dialog.end();
+					if(final_userLock){
+						PKLock.getInstance().releaseLock(LOCKNAME,
+								ClientEnvironment.getInstance().getUser().getPrimaryKey(), null);
+					}
 				}
 			}
 		}.start();
 		
+	}
+	
+	public boolean lockData() throws java.lang.Exception {
+		try {
+			return PKLock.getInstance().acquireLock(LOCKNAME,
+					ClientEnvironment.getInstance().getUser().getPrimaryKey(), null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
 	private void importData(DipADContdataVO vo1, DipDatadefinitHVO cvo,
 			HashMap<String, DipDatadefinitBVO> databMap, HashMap autoInMap,
@@ -2080,7 +2110,9 @@ extends AbstractMyEventHandler {
 		HashMap<String, HashMap<String, String>> saveReplaceMap = new HashMap<String, HashMap<String, String>>();
 		HashMap<String, String> enameMap = new HashMap<String, String>();
 		String version = "";
-		for(int i=0;i<tvo.getData().length;i++){
+		int length = tvo.getData().length;
+		String[] oiDs = queryfield.getOIDs(ClientEnvironment.getInstance().getCorporation().getPrimaryKey(), length);
+		for(int i=0;i<length;i++){
 			StringBuffer insertsql=new StringBuffer( "insert into  "+tablename );
 			StringBuffer filds=new StringBuffer();
 			StringBuffer values=new StringBuffer();
@@ -2102,7 +2134,11 @@ extends AbstractMyEventHandler {
 						value = version;
 					}
 				}else{
-					value=FunctionUtil.getFuctionValue(string);
+					if(FunctionUtil.PKENAME.equals(string)){
+						value = oiDs[i];
+					}else{
+						value=FunctionUtil.getFuctionValue(string);
+					}
 				}
 				if(databMap.get(ename).getType().contains("CHAR")){
 					values.append(" '"+value+"',");

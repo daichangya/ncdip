@@ -227,4 +227,6 @@ public interface IQueryField {
 	 * @throws Exception
 	 */
 	public RetMessage docheck(String pk_bus)throws Exception;
+	
+	public void insertVOs(SuperVO[] vos) throws Exception;
 }

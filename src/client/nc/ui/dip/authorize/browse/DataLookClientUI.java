@@ -50,6 +50,17 @@ public class DataLookClientUI extends AbstractDataLookClientUI{
 	
 	StringBuffer contFields = new StringBuffer();
 	
+	private Integer importCount = 3000;
+	
+	public Integer getImportCount() {
+		return importCount;
+	}
+
+	public void setImportCount(Integer importCount) {
+		this.importCount = importCount;
+	}
+
+
 	public Integer getCount() {
 		return count;
 	}
@@ -81,10 +92,15 @@ public class DataLookClientUI extends AbstractDataLookClientUI{
 		getBillCardPanel().getBodyPanel().getPmBody().removeAll();
 		
 		String sql="select ss.sysvalue from dip_runsys_b ss  where ss.Syscode='DIP-0000015' and nvl(dr,0)=0 ";
+		String importsql="select ss.sysvalue from dip_runsys_b ss  where ss.Syscode='DIP-0000016' and nvl(dr,0)=0 ";
 		try {
 			String value=iq.queryfield(sql);
 			if(null != value && !"".equals(value)){
 				setCount(Integer.valueOf(value));
+			}
+			String importvalue=iq.queryfield(importsql);
+			if(null != importvalue && !"".equals(importvalue)){
+				setImportCount(Integer.valueOf(importvalue));
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

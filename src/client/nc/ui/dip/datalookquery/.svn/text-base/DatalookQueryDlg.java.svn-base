@@ -2,27 +2,38 @@ package nc.ui.dip.datalookquery;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import nc.bs.framework.common.NCLocator;
+import nc.itf.dip.pub.IQueryField;
+import nc.ui.dip.util.ClientEnvDef;
 import nc.ui.ml.NCLangRes;
 import nc.ui.pub.ButtonObject;
+import nc.ui.pub.ClientEnvironment;
 import nc.ui.pub.MessageEvent;
 import nc.ui.pub.MessageListener;
 import nc.ui.pub.beans.MessageDialog;
 import nc.ui.pub.beans.UIButton;
 import nc.ui.pub.beans.UIDialog;
 import nc.ui.pub.beans.UIPanel;
-import nc.ui.pub.beans.UIScrollPane;
+import nc.ui.pub.bill.BillModel;
+import nc.ui.trade.business.HYPubBO_Client;
 import nc.ui.trade.button.ButtonVOFactory;
 import nc.ui.trade.button.IBillButton;
+import nc.uif.pub.exception.UifException;
+import nc.vo.dip.contwhquery.ContwhqueryVO;
 import nc.vo.dip.datadefinit.DipDatadefinitBVO;
+import nc.vo.dip.util.ClientEvnUtilVO;
+import nc.vo.dip.util.QueryUtilVO;
 import nc.vo.logging.Debug;
 import nc.vo.pub.BusinessRuntimeException;
+import nc.vo.pub.CircularlyAccessibleValueObject;
+import nc.vo.pub.SuperVO;
 import nc.vo.pub.lang.UFBoolean;
 import nc.vo.trade.button.ButtonVO;
 
@@ -45,6 +56,12 @@ public class DatalookQueryDlg extends UIDialog implements MessageListener {
 	        	  onBtnLineAdd();
 	          }else if(e.getSource()==getBtnLineDel()){
 	        	  onBtnLineDel();
+	          }else if(e.getSource()==getBtnLoadTemplet()){
+	        	  onBtnLoadTemplet();
+	          }else if(e.getSource()==getBtnSaveTemplet()){
+	        	  onBtnSaveTemplet();
+	          }else if(e.getSource()==getBtnClearTemplet()){
+	        	  onBtnClearTemplet();
 	          }
 	          
 		}
@@ -78,6 +95,9 @@ public class DatalookQueryDlg extends UIDialog implements MessageListener {
 	private ButtonObject btnLineDelObj;
 	
 	private UIButton btnCancel;
+	private UIButton btnLoadTemplet;
+	private UIButton btnSaveTemplet;
+	private UIButton btnClearTemplet;
 	
 	private ButtonObject btnCancelObj;
 
@@ -88,6 +108,8 @@ public class DatalookQueryDlg extends UIDialog implements MessageListener {
 	private IvjEventHandler ivjEventHandler;
 	
 	public int onBtnSave=0;//0表示
+	
+	private IQueryField iq=(IQueryField) NCLocator.getInstance().lookup(IQueryField.class.getName());
 	
 	public int getOnBtnSave(){
 		return onBtnSave;
@@ -143,6 +165,9 @@ public class DatalookQueryDlg extends UIDialog implements MessageListener {
 	   getBtnCancel().addActionListener((ActionListener) ivjEventHandler);
 	   getBtnLineAdd().addActionListener((ActionListener) ivjEventHandler);
 	   getBtnLineDel().addActionListener((ActionListener) ivjEventHandler);
+	   getBtnLoadTemplet().addActionListener((ActionListener) ivjEventHandler);
+	   getBtnSaveTemplet().addActionListener((ActionListener) ivjEventHandler);
+	   getBtnClearTemplet().addActionListener((ActionListener) ivjEventHandler);
 	}
 	
 	public DatalookQueryClientUI getBillUI() {
@@ -237,6 +262,42 @@ public class DatalookQueryDlg extends UIDialog implements MessageListener {
 	   }
 	   return btnCancelObj;
 	}
+	
+	private UIButton getBtnLoadTemplet()
+	{
+	   if(btnLoadTemplet == null)
+	   {
+		   btnLoadTemplet = new UIButton();
+		   btnLoadTemplet.setName("btnLoadTemplet");
+		   btnLoadTemplet.setText("加载模板");
+		   btnLoadTemplet.setName("加载模板");
+	   }
+	   return btnLoadTemplet;
+	}
+	
+	private UIButton getBtnSaveTemplet()
+	{
+	   if(btnSaveTemplet == null)
+	   {
+		   btnSaveTemplet = new UIButton();
+		   btnSaveTemplet.setName("btnSaveTemplet");
+		   btnSaveTemplet.setText("保存模板");
+		   btnSaveTemplet.setName("保存模板");
+	   }
+	   return btnSaveTemplet;
+	}
+	
+	private UIButton getBtnClearTemplet()
+	{
+	   if(btnClearTemplet == null)
+	   {
+		   btnClearTemplet = new UIButton();
+		   btnClearTemplet.setName("btnClearTemplet");
+		   btnClearTemplet.setText("重置模板");
+		   btnClearTemplet.setName("重置模板");
+	   }
+	   return btnClearTemplet;
+	}
 	private UIPanel getButtonPane()
 	{
 	   if(ButtonPane == null)
@@ -251,6 +312,9 @@ public class DatalookQueryDlg extends UIDialog implements MessageListener {
 	       ButtonPane.add(getBtnLineDel(), null);
 	       ButtonPane.add(getBtnSave(), null);
 	       ButtonPane.add(getBtnCancel(),null);
+	       ButtonPane.add(getBtnLoadTemplet(),null);
+	       ButtonPane.add(getBtnSaveTemplet(),null);
+	       ButtonPane.add(getBtnClearTemplet(),null);
 //	       ButtonPane.add(getBtnCancel(), null);
 	      
 	   }
@@ -356,7 +420,6 @@ public class DatalookQueryDlg extends UIDialog implements MessageListener {
 	       handleException(e);
 	   }
 	}
-	
 	private void onBtnSave()
 	{
 	   try
@@ -373,6 +436,85 @@ public class DatalookQueryDlg extends UIDialog implements MessageListener {
 	       handleException(e);
 	   }
 //	   setButtonStatus();
+	}
+	private void onBtnLoadTemplet()
+	{
+		String primaryKey = ClientEnvironment.getInstance().getUser().getPrimaryKey();
+		try {
+			ContwhqueryVO[] vos = (ContwhqueryVO[])HYPubBO_Client.queryByCondition(ContwhqueryVO.class, 
+					"userid='"
+					+primaryKey
+					+"' and Pk_datadefinit_h='"
+					+key
+					+"'");
+			if(null != vos && vos.length>0){
+				ArrayList<String> list = new ArrayList<String>();
+				ClientEvnUtilVO utilVO = ClientEnvDef.queryAuthMap.get(key);
+				if(null != utilVO && utilVO.getVos().length>0){
+					for (QueryUtilVO vo : utilVO.getVos()) {
+						list.add(vo.getEname());
+					}
+				}
+				for (ContwhqueryVO contwhqueryVO : vos) {
+					if(!list.contains(contwhqueryVO.getEname())){
+						MessageDialog.showErrorDlg(this, "错误", "查询模板不匹配,请重置模板！");
+						return;
+					}
+				}
+				BillModel billModel = getBillUI().getBillCardPanel().getBillModel();
+				int rowCount = billModel.getRowCount();
+				int[] delRows = new int[rowCount];
+				for (int i = 0; i < rowCount; i++) {
+					delRows[i] = i;
+				}
+				billModel.delLine(delRows);
+				billModel.setBodyDataVO(vos);
+			}
+		} catch (UifException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	private void onBtnSaveTemplet()
+	{
+		BillModel billModel = getBillUI().getBillCardPanel().getBillModel();
+		ContwhqueryVO[] valueVOs = (ContwhqueryVO[])billModel.getBodyValueVOs(ContwhqueryVO.class.getName());
+		if(null != valueVOs && valueVOs.length>0){
+			String primaryKey = ClientEnvironment.getInstance().getUser().getPrimaryKey();
+			try {
+				for (ContwhqueryVO contwhqueryVO : valueVOs) {
+					contwhqueryVO.setUserid(primaryKey);
+					contwhqueryVO.setPk_datadefinit_h(key);
+				}
+				HYPubBO_Client.deleteByWhereClause(ContwhqueryVO.class, "userid='"
+						+primaryKey
+						+"' and Pk_datadefinit_h='"
+						+key
+						+"'");
+				iq.insertVOs(valueVOs);
+				MessageDialog.showHintDlg(this, "提示", "模板保存成功！");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	private void onBtnClearTemplet()
+	{
+		BillModel billModel = getBillUI().getBillCardPanel().getBillModel();
+		int rowCount = billModel.getRowCount();
+		int[] delRows = new int[rowCount];
+		for (int i = 0; i < rowCount; i++) {
+			delRows[i] = i;
+		}
+		billModel.delLine(delRows);
+		try {
+			getBillUI().setDefaultData();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public String getReturnSql(){

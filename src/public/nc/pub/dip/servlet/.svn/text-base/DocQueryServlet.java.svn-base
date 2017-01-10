@@ -65,7 +65,7 @@ public class DocQueryServlet extends HttpServlet {
 							}
 							Collection queryCol = dao.retrieveByClause(DipAuthDesignVO.class, "pk_datadefinit_h = '"
 									+vos[0].getPrimaryKey()
-									+"' and designtype = 5 and coalesce(dr, 0) = 0 and consvalue is not null ");
+									+"' and designtype = 5 and coalesce(dr, 0) = 0 and consvalue is not null and consvalue<>'SYS.REF' ");
 							final FunctionUtilWithPri functionUtilWithPri = new FunctionUtilWithPri();
 							functionUtilWithPri.setUsercode(username.toUpperCase());
 							if(null != queryCol && queryCol.size()>0){
