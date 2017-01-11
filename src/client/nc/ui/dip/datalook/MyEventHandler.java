@@ -460,7 +460,7 @@ extends AbstractMyEventHandler {
 				}
 			}
 
-			ui.getBillCardPanel().setTatolRowShow(true);
+			ui.getBillCardPanel().setTatolRowShow(false);
 			if(listValue!=null && listValue.size()>0){
 
 				for(int i = 0;i<listValue.size();i++){
@@ -489,14 +489,15 @@ extends AbstractMyEventHandler {
 						vo.setAttributeValue("vdef"+String.valueOf(j+1), value);
 						ui.getBillCardPanel().getBillModel().setValueAt(value, i, "vdef"+String.valueOf(j+1));
 						BillItem bodyItem = ui.getBillCardPanel().getBodyItem( "vdef"+String.valueOf(j+1));
-						if(bodyItem!=null&&bodyItem.isShow()){
-							ui.getBillCardPanel().getBillTable().getCellRenderer(i, c).getTableCellRendererComponent(ui.getBillCardPanel().getBillTable(), value, false, false, i, c);
-							c++;
-						}
+//						if(bodyItem!=null&&bodyItem.isShow()){
+//							ui.getBillCardPanel().getBillTable().getCellRenderer(i, c).getTableCellRendererComponent(ui.getBillCardPanel().getBillTable(), value, false, false, i, c);
+//							c++;
+//						}
 					}
 //					ui.getBillCardPanel().getBillModel().setBodyRowVO(vo, i);
 				}
 			}
+			ui.getBillCardPanel().setTatolRowShow(true);
 			
 //			ui.getBillCardPanel().setBillData(ui.getBillCardPanel().getBillData());
 
