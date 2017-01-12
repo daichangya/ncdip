@@ -218,6 +218,7 @@ public class MyEventHandler extends AbstractMyEventHandler {
 			updateBuffer();
 			getBufferData().setCurrentRow(0);
 			getBufferData().setCurrentVO(getBufferData().getCurrentVO());
+			getBillCardPanelWrapper().getBillCardPanel().getBillModel().sortByColumn("code", true);
 			onBoEdit();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

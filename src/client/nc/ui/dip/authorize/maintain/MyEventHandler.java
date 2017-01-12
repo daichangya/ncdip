@@ -1073,7 +1073,8 @@ extends AbstractMyEventHandler{
 			DipDatadefinitHVO hvo = (DipDatadefinitHVO)HYPubBO_Client.queryByPrimaryKey(DipDatadefinitHVO.class, contdataVO.getExtetabcode());
 
 //			IQueryField queryfield = (IQueryField)NCLocator.getInstance().lookup(IQueryField.class.getName());
-			String where=" and pk_role_corp_alloc in (select pk_role from dip_rolegroup_b where pk_role_group in ((select pk_fp from dip_adcontdata_b where nvl(dr,0)=0 and pk_contdata_h='"+ui.selectnode+"')) and nvl(dr, 0) = 0) ";
+			String where=" and pk_role_corp_alloc in (select pk_role from dip_rolegroup_b where pk_role_group in ((select pk_fp from dip_adcontdata_b where nvl(dr,0)=0 and pk_contdata_h='"+ui.selectnode+"')) and nvl(dr, 0) = 0) "
+				+" and pk_role_group in (select pk_fp from dip_adcontdata_b where nvl(dr,0)=0 and pk_contdata_h='"+ui.selectnode+"')";
 			if(dlg.getReturnSql()!=null&&dlg.getReturnSql().trim().length()>0){
 				where = where+dlg.getReturnSql();
 			}

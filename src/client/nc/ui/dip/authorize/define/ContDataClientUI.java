@@ -198,6 +198,7 @@ public class ContDataClientUI extends AbstractContdataClientUI implements BillCa
 				e.printStackTrace();
 			}
 		}
+		getBillCardPanel().getBillModel().sortByColumn("group_code", true);
 		//getButtonManager().getButton(201).setEnabled(false);
 
 	}
