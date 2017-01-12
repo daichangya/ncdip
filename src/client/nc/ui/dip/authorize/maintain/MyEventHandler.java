@@ -1119,7 +1119,7 @@ extends AbstractMyEventHandler{
 			//查询对照表中的值
 			sql = "select ";
 			if(!"".equals(extesysfield.toString()))
-				sql = sql+""+extesysfield.toString().substring(0, extesysfield.toString().length()-1)+" from "+hvo.getMemorytable()+" where 1=1 "+where;
+				sql = sql+""+extesysfield.toString().substring(0, extesysfield.toString().length()-1)+" from "+hvo.getMemorytable()+" where 1=1 "+where+" order by GROUP_CODE,ROLE_CODE";
 			else
 				return ;
 			extsql=sql;

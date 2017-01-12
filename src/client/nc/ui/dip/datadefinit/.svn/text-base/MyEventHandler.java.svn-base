@@ -2091,8 +2091,8 @@ public class MyEventHandler extends AbstractMyEventHandler{
 		
 	}
 
-	final  String  EXPSTRINGNAME="中文名称,英文名称,类型,长度,小数位,默认值,必输,主键,预置主键,唯一约束,引用,引用表,引用列";
-	final  String  IMPSTRINGCODE="cname,ename,type,length,deciplace,defaultvalue,isimport,ispk,issyspk,isonlyconst,isquote,def_quotetable,quotecolu";
+	final  String  EXPSTRINGNAME="中文名称,英文名称,类型,长度,小数位,默认值,校验,必输,主键,预置主键,唯一约束,引用,引用表,引用列";
+	final  String  IMPSTRINGCODE="cname,ename,type,length,deciplace,defaultvalue,is_check,isimport,ispk,issyspk,isonlyconst,isquote,def_quotetable,quotecolu";
    @Override
 	protected void onBoExport() throws Exception {
 		// TODO Auto-generated method stub
@@ -2132,29 +2132,30 @@ public class MyEventHandler extends AbstractMyEventHandler{
 								expExcelvos[i].setAttributeValue("line4",bvo.getLength()==null?"":bvo.getLength());
 								expExcelvos[i].setAttributeValue("line5",bvo.getDeciplace()==null?"":bvo.getDeciplace());
 								expExcelvos[i].setAttributeValue("line6",bvo.getDefaultvalue()==null?"":bvo.getDefaultvalue());
-								expExcelvos[i].setAttributeValue("line7",bvo.getIsimport()==null?"":bvo.getIsimport());
-								expExcelvos[i].setAttributeValue("line8",bvo.getIspk()==null?"":bvo.getIspk());
-								expExcelvos[i].setAttributeValue("line9",bvo.getIssyspk()==null?"":bvo.getIssyspk());
-								expExcelvos[i].setAttributeValue("line10",bvo.getIsonlyconst()==null?"":bvo.getIsonlyconst());
-								expExcelvos[i].setAttributeValue("line11",bvo.getIsquote()==null?"":bvo.getIsquote());
+								expExcelvos[i].setAttributeValue("line7",bvo.getIs_check()==null?"N":bvo.getIs_check());
+								expExcelvos[i].setAttributeValue("line8",bvo.getIsimport()==null?"":bvo.getIsimport());
+								expExcelvos[i].setAttributeValue("line9",bvo.getIspk()==null?"":bvo.getIspk());
+								expExcelvos[i].setAttributeValue("line10",bvo.getIssyspk()==null?"":bvo.getIssyspk());
+								expExcelvos[i].setAttributeValue("line11",bvo.getIsonlyconst()==null?"":bvo.getIsonlyconst());
+								expExcelvos[i].setAttributeValue("line12",bvo.getIsquote()==null?"":bvo.getIsquote());
 								if(bvo.getIsquote()!=null&&bvo.getIsquote().booleanValue()){
 									if(bvo.getQuotetable()!=null&&bvo.getQuotetable().trim().length()>0){
 									String sql="select  h.memorytable from dip_datadefinit_h h where h.pk_datadefinit_h in( select pk_datadefinit_h from dip_datadefinit_b b where b.pk_datadefinit_b ='"+bvo.getQuotetable()+"' and nvl(dr,0)=0 ) and nvl(h.dr,0)=0 ";
 									String quoteTablename=iq.queryfield(sql);
 										if(quoteTablename!=null&&quoteTablename.length()>0){
-											expExcelvos[i].setAttributeValue("line12",quoteTablename);
-											expExcelvos[i].setAttributeValue("line13",bvo.getQuotecolu()==null?"":bvo.getQuotecolu());
+											expExcelvos[i].setAttributeValue("line13",quoteTablename);
+											expExcelvos[i].setAttributeValue("line14",bvo.getQuotecolu()==null?"":bvo.getQuotecolu());
 										}else{
-											expExcelvos[i].setAttributeValue("line12","");
 											expExcelvos[i].setAttributeValue("line13","");
+											expExcelvos[i].setAttributeValue("line14","");
 										}
 								    }else{
-										expExcelvos[i].setAttributeValue("line12","");
 										expExcelvos[i].setAttributeValue("line13","");
+										expExcelvos[i].setAttributeValue("line14","");
 								    }
 								}else{
-									expExcelvos[i].setAttributeValue("line12","");
 									expExcelvos[i].setAttributeValue("line13","");
+									expExcelvos[i].setAttributeValue("line14","");
 								}
 						}
 					   }
